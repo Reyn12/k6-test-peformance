@@ -1,24 +1,17 @@
 #!/usr/bin/env bash
 # ============================================================
-# run.sh — selector interaktif buat pilih domain sebelum test
+# run.sh — jalanin k6 dengan input URL langsung di terminal
 #
 # Cara pakai:
-#   ./run.sh                      → menu pilih domain + pilih script
-#   ./run.sh 1                    → langsung domain #1, pilih script
-#   ./run.sh 1 02-load-test.js    → langsung domain #1 + script itu
+#   ./run.sh                                  → nanya URL + pilih test
+#   ./run.sh https://web-kamu.com             → langsung URL itu, pilih test
+#   ./run.sh https://web-kamu.com 4           → URL + script #4 sekaligus
 # ============================================================
 
 set -euo pipefail
 
-# --- DAFTAR DOMAIN ---------------------------------------------------
-# Tambah/edit di sini. Format: "Nama Label|https://url-lengkap"
-DOMAINS=(
-  "Portfolio Vercel|https://rey-porto-five.vercel.app"
-  "Web cPanel|https://ganti-domain-cpanel.com"
-  "Web VPS|http://43.156.1.220"
-  "Domain 4|https://ganti-domain-4.com"
-  "Domain 5|https://ganti-domain-5.com"
-)
+# URL default kalau tekan Enter tanpa ngetik apa-apa
+DEFAULT_URL="https://rey-porto-five.vercel.app"
 
 # --- DAFTAR SCRIPT TEST ----------------------------------------------
 SCRIPTS=(
@@ -29,27 +22,19 @@ SCRIPTS=(
 )
 # ---------------------------------------------------------------------
 
-# 1) Pilih domain
-pick="${1:-}"
-if [[ -z "$pick" ]]; then
+# 1) Tentukan URL — dari argumen, atau tanya di terminal
+BASE_URL="${1:-}"
+if [[ -z "$BASE_URL" ]]; then
   echo ""
-  echo "Pilih domain yang mau di-test:"
-  for i in "${!DOMAINS[@]}"; do
-    label="${DOMAINS[$i]%%|*}"
-    url="${DOMAINS[$i]##*|}"
-    printf "  %d) %-20s → %s\n" "$((i + 1))" "$label" "$url"
-  done
-  echo ""
-  read -rp "Pilih [1-${#DOMAINS[@]}]: " pick
+  read -rp "Masukkan URL web [default: $DEFAULT_URL]: " BASE_URL
+  BASE_URL="${BASE_URL:-$DEFAULT_URL}"
 fi
 
-idx=$((pick - 1))
-if [[ "$idx" -lt 0 || "$idx" -ge "${#DOMAINS[@]}" ]]; then
-  echo "❌ Pilihan domain tidak valid: $pick"
+# Validasi sederhana: harus diawali http:// atau https://
+if [[ ! "$BASE_URL" =~ ^https?:// ]]; then
+  echo "❌ URL harus diawali http:// atau https:// — kamu isi: '$BASE_URL'"
   exit 1
 fi
-BASE_URL="${DOMAINS[$idx]##*|}"
-LABEL="${DOMAINS[$idx]%%|*}"
 
 # 2) Pilih script test
 script="${2:-}"
@@ -80,6 +65,6 @@ fi
 
 # 4) Jalankan k6
 echo ""
-echo "▶️  Test '$LABEL' ($BASE_URL) pakai $script"
+echo "▶️  Test $BASE_URL pakai $script"
 echo ""
 k6 run -e BASE_URL="$BASE_URL" "${EXTRA[@]}" "$script"
