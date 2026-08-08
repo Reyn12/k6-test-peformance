@@ -67,4 +67,4 @@ fi
 echo ""
 echo "▶️  Test $BASE_URL pakai $script"
 echo ""
-k6 run -e BASE_URL="$BASE_URL" "${EXTRA[@]}" "$script"
+k6 run -e BASE_URL="$BASE_URL" ${EXTRA[@]+"${EXTRA[@]}"} "$script"
