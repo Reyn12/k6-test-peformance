@@ -17,7 +17,7 @@ import { check, sleep } from 'k6';
 import { BASE_URL, ENDPOINTS } from './config.js';
 
 // Ambil PEAK dari env var, default 500 kalau ga diisi
-const PEAK = Number(__ENV.PEAK || 500);
+const PEAK = Number(__ENV.PEAK || 100000);
 
 export const options = {
   stages: [
