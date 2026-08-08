@@ -14,8 +14,8 @@ set -euo pipefail
 # Tambah/edit di sini. Format: "Nama Label|https://url-lengkap"
 DOMAINS=(
   "Portfolio Vercel|https://rey-porto-five.vercel.app"
-  "Domain 2|https://ganti-domain-2.com"
-  "Domain 3|https://ganti-domain-3.com"
+  "Web cPanel|https://ganti-domain-cpanel.com"
+  "Web VPS|http://43.156.1.220"
   "Domain 4|https://ganti-domain-4.com"
   "Domain 5|https://ganti-domain-5.com"
 )
@@ -25,6 +25,7 @@ SCRIPTS=(
   "01-smoke-test.js"
   "02-load-test.js"
   "03-stress-test.js"
+  "04-spike-test.js"
 )
 # ---------------------------------------------------------------------
 
@@ -68,8 +69,17 @@ if [[ -z "$script" ]]; then
   script="${SCRIPTS[$sidx]}"
 fi
 
-# 3) Jalankan k6
+# 3) Kalau spike test, tanya intensitas puncak (PEAK)
+EXTRA=()
+if [[ "$script" == "04-spike-test.js" ]]; then
+  read -rp "Puncak virtual user (PEAK) [default 500]: " peak
+  peak="${peak:-500}"
+  EXTRA=(-e "PEAK=$peak")
+  echo "→ PEAK diset ke $peak user"
+fi
+
+# 4) Jalankan k6
 echo ""
 echo "▶️  Test '$LABEL' ($BASE_URL) pakai $script"
 echo ""
-k6 run -e BASE_URL="$BASE_URL" "$script"
+k6 run -e BASE_URL="$BASE_URL" "${EXTRA[@]}" "$script"
