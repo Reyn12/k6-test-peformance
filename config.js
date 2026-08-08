@@ -8,7 +8,7 @@ export const BASE_URL = __ENV.BASE_URL || 'https://rey-porto-five.vercel.app';
 // Endpoint yang mau di-test. Sesuaikan sama punya kamu.
 export const ENDPOINTS = {
   landing: '/',                 // halaman landing page portfolio
-  api_projects: '/api/projects', // contoh endpoint REST API
+  // api_projects: '/api/projects', // contoh endpoint REST API
 };
 
 // Ambang batas (threshold) — test dianggap GAGAL kalau ini dilanggar.
