@@ -1,0 +1,10 @@
+# Hasil test — jangan di-commit, cukup di lokal/VPS
+*.json
+!package.json
+hasil*.json
+ringkasan*.json
+*.html
+*.csv
+
+# OS junk
+.DS_Store
