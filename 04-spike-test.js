@@ -16,8 +16,11 @@ import http from 'k6/http';
 import { check, sleep } from 'k6';
 import { BASE_URL, ENDPOINTS } from './config.js';
 
-// Ambil PEAK dari env var, default 500 kalau ga diisi
-const PEAK = Number(__ENV.PEAK || 100000);
+// Ambil PEAK dari env var, default 500 kalau ga diisi.
+// JANGAN pakai angka ekstrem (puluhan ribu) — mesin penembak (VPS/Mac)
+// bakal kehabisan RAM & freeze SEBELUM web target kena beban.
+// Batas aman dari 1 VPS kecil kira-kira 500-2000.
+const PEAK = Number(__ENV.PEAK || 500);
 
 export const options = {
   stages: [
