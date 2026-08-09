@@ -10,7 +10,6 @@ SCRIPTS=(
   "03-stress-test.js"
   "04-spike-test.js"
   "05-api-post-test.js"
-  "06-api-get-test.js"
   "06-breakpoint-test.js"
 )
 
