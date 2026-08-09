@@ -11,6 +11,7 @@ SCRIPTS=(
   "04-spike-test.js"
   "05-api-post-test.js"
   "06-api-get-test.js"
+  "06-breakpoint-test.js"
 )
 
 BASE_URL="${1:-}"
@@ -58,6 +59,13 @@ elif [[ "$script" == "05-api-post-test.js" ]]; then
   [[ -n "$userid" ]] && EXTRA+=(-e "USER_ID=$userid")
   [[ -n "$grupid" ]] && EXTRA+=(-e "GRUPID=$grupid")
   echo "→ PEAK $peak, token terisi"
+elif [[ "$script" == "06-breakpoint-test.js" ]]; then
+  read -rp "Target req/detik puncak (MAX_RATE) [default 4000]: " maxrate
+  maxrate="${maxrate:-4000}"
+  read -rp "Batas pool VU (MAX_VUS) [default 10000]: " maxvus
+  maxvus="${maxvus:-10000}"
+  EXTRA=(-e "MAX_RATE=$maxrate" -e "MAX_VUS=$maxvus")
+  echo "→ MAX_RATE $maxrate req/s, MAX_VUS $maxvus"
 fi
 
 echo ""
