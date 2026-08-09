@@ -26,7 +26,7 @@ export default function () {
   const params = {
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${TOKEN}`,
+      'token': TOKEN,
     },
   };
 
