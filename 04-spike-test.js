@@ -19,6 +19,10 @@ export default function () {
     'status 200': (r) => r.status === 200,
   });
 
+  if (__VU === 1 && __ITER === 0) {
+    console.log(`cf-ray: ${res.headers['Cf-Ray'] || '-'} | cache: ${res.headers['Cf-Cache-Status'] || '-'} | server: ${res.headers['Server'] || '-'}`);
+  }
+
   if (res.status !== 200) {
     console.log(`Status: ${res.status} | Body: ${res.body ? res.body.substring(0, 200) : 'kosong'}`);
   }
