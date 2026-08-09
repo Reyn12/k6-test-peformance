@@ -18,5 +18,10 @@ export default function () {
   check(res, {
     'status 200': (r) => r.status === 200,
   });
+
+  if (res.status !== 200) {
+    console.log(`Status: ${res.status} | Body: ${res.body ? res.body.substring(0, 200) : 'kosong'}`);
+  }
+
   sleep(1);
 }
