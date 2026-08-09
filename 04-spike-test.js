@@ -6,7 +6,7 @@ const PEAK = Number(__ENV.PEAK || 500);
 
 export const options = {
   stages: [
-    { duration: '10s', target: Math.round(PEAK * 0.05) },
+    { duration: '10s', target: 50 },
     { duration: '10s', target: PEAK },
     { duration: '30s', target: PEAK },
     { duration: '10s', target: 0 },
