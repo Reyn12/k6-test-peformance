@@ -10,6 +10,7 @@ SCRIPTS=(
   "03-stress-test.js"
   "04-spike-test.js"
   "05-api-post-test.js"
+  "06-api-get-test.js"
 )
 
 BASE_URL="${1:-}"
