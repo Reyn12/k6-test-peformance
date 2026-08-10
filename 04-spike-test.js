@@ -2,15 +2,16 @@ import http from 'k6/http';
 import { check } from 'k6';
 import { BASE_URL, ENDPOINTS } from './config.js';
 
-// Default tinggi buat cari titik patah sebelum upgrade VPS.
-// Override: PEAK=5000 k6 run -e PEAK=5000 04-spike-test.js
-const PEAK = Number(__ENV.PEAK || 100000);
+// Overkill spike buat VPS spek tinggi.
+// Override: k6 run -e PEAK=50000 04-spike-test.js
+const PEAK = Number(__ENV.PEAK || 250000);
 
 export const options = {
+  discardResponseBodies: true,
   stages: [
-    { duration: '10s', target: 50 },
+    { duration: '5s', target: 1000 },
     { duration: '10s', target: PEAK },
-    { duration: '30s', target: PEAK },
+    { duration: '60s', target: PEAK },
     { duration: '10s', target: 0 },
   ],
 };

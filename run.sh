@@ -43,8 +43,8 @@ fi
 
 EXTRA=()
 if [[ "$script" == "04-spike-test.js" ]]; then
-  read -rp "Puncak virtual user (PEAK) [default 100000]: " peak
-  peak="${peak:-100000}"
+  read -rp "Puncak virtual user (PEAK) [default 250000]: " peak
+  peak="${peak:-250000}"
   EXTRA=(-e "PEAK=$peak")
   echo "→ PEAK diset ke $peak user"
 elif [[ "$script" == "05-breakpoint-test.js" ]]; then
