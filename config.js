@@ -1,4 +1,4 @@
-export const BASE_URL = __ENV.BASE_URL || 'https://rey-porto-five.vercel.app';
+export const BASE_URL = __ENV.BASE_URL || 'https://waynegacy.ink';
 
 export const ENDPOINTS = {
   landing: '/',

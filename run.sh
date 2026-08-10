@@ -9,8 +9,7 @@ SCRIPTS=(
   "02-load-test.js"
   "03-stress-test.js"
   "04-spike-test.js"
-  "05-api-post-test.js"
-  "06-breakpoint-test.js"
+  "05-breakpoint-test.js"
 )
 
 BASE_URL="${1:-}"
@@ -44,21 +43,11 @@ fi
 
 EXTRA=()
 if [[ "$script" == "04-spike-test.js" ]]; then
-  read -rp "Puncak virtual user (PEAK) [default 500]: " peak
-  peak="${peak:-500}"
+  read -rp "Puncak virtual user (PEAK) [default 100000]: " peak
+  peak="${peak:-100000}"
   EXTRA=(-e "PEAK=$peak")
   echo "→ PEAK diset ke $peak user"
-elif [[ "$script" == "05-api-post-test.js" ]]; then
-  read -rp "Token (Bearer): " token
-  read -rp "userId [Enter = default]: " userid
-  read -rp "grupid [Enter = default]: " grupid
-  read -rp "Puncak virtual user (PEAK) [default 500]: " peak
-  peak="${peak:-500}"
-  EXTRA=(-e "PEAK=$peak" -e "TOKEN=$token")
-  [[ -n "$userid" ]] && EXTRA+=(-e "USER_ID=$userid")
-  [[ -n "$grupid" ]] && EXTRA+=(-e "GRUPID=$grupid")
-  echo "→ PEAK $peak, token terisi"
-elif [[ "$script" == "06-breakpoint-test.js" ]]; then
+elif [[ "$script" == "05-breakpoint-test.js" ]]; then
   read -rp "Target req/detik puncak (MAX_RATE) [default 4000]: " maxrate
   maxrate="${maxrate:-4000}"
   read -rp "Batas pool VU (MAX_VUS) [default 10000]: " maxvus
