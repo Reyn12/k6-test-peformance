@@ -10,6 +10,7 @@ SCRIPTS=(
   "03-stress-test.js"
   "04-spike-test.js"
   "05-breakpoint-test.js"
+  "06-proxy-rotation-test.js"
 )
 
 BASE_URL="${1:-}"
@@ -54,6 +55,38 @@ elif [[ "$script" == "05-breakpoint-test.js" ]]; then
   maxvus="${maxvus:-10000}"
   EXTRA=(-e "MAX_RATE=$maxrate" -e "MAX_VUS=$maxvus")
   echo "→ MAX_RATE $maxrate req/s, MAX_VUS $maxvus"
+fi
+
+read -rp "Pakai proxy? [y/N]: " use_proxy
+if [[ "$use_proxy" =~ ^[yY] ]]; then
+  echo ""
+  echo "Paste proxy (2 format didukung):"
+  echo "  login,password,host,port"
+  echo "  login:password@host:port"
+  read -rp "Proxy: " proxy_input
+  proxy_input="${proxy_input// /}"
+
+  if [[ "$proxy_input" == *"@"* && "$proxy_input" == *":"* ]]; then
+    # format provider: login:password@host:port
+    PROXY_CREDS="${proxy_input%%@*}"
+    PROXY_ADDR="${proxy_input##*@}"
+    PROXY_LOGIN="${PROXY_CREDS%%:*}"
+    PROXY_PASS="${PROXY_CREDS#*:}"
+    PROXY_HOST="${PROXY_ADDR%%:*}"
+    PROXY_PORT="${PROXY_ADDR##*:}"
+  else
+    # format koma: login,password,host,port
+    IFS=',' read -r PROXY_LOGIN PROXY_PASS PROXY_HOST PROXY_PORT <<< "$proxy_input"
+  fi
+
+  if [[ -z "$PROXY_LOGIN" || -z "$PROXY_PASS" || -z "$PROXY_HOST" || -z "$PROXY_PORT" ]]; then
+    echo "❌ Format salah. Contoh: login,password,host,port"
+    exit 1
+  fi
+
+  PROXY_URL="http://${PROXY_LOGIN}:${PROXY_PASS}@${PROXY_HOST}:${PROXY_PORT}"
+  EXTRA+=(-e "PROXY_URL=$PROXY_URL")
+  echo "→ proxy aktif: http://${PROXY_LOGIN}:****@${PROXY_HOST}:${PROXY_PORT}"
 fi
 
 echo ""

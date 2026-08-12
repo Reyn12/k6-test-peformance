@@ -1,6 +1,7 @@
 import http from 'k6/http';
 import { check } from 'k6';
 import { BASE_URL, ENDPOINTS } from './config.js';
+import { getProxyParams } from './proxy.js';
 
 // Overkill spike buat VPS spek tinggi.
 // Override: k6 run -e PEAK=50000 04-spike-test.js
@@ -17,7 +18,7 @@ export const options = {
 };
 
 export default function () {
-  const res = http.get(`${BASE_URL}${ENDPOINTS.landing}`);
+  const res = http.get(`${BASE_URL}${ENDPOINTS.landing}`, getProxyParams());
   check(res, {
     'status 200': (r) => r.status === 200,
   });

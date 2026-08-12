@@ -1,6 +1,7 @@
 import http from 'k6/http';
 import { check, sleep, group } from 'k6';
 import { BASE_URL, ENDPOINTS, THRESHOLDS } from './config.js';
+import { getProxyParams } from './proxy.js';
 
 export const options = {
   stages: [
@@ -15,14 +16,14 @@ export const options = {
 
 export default function () {
   group('Landing Page', () => {
-    const res = http.get(`${BASE_URL}${ENDPOINTS.landing}`);
+    const res = http.get(`${BASE_URL}${ENDPOINTS.landing}`, getProxyParams());
     check(res, {
       'landing status 200': (r) => r.status === 200,
     });
   });
 
   group('API Projects', () => {
-    const res = http.get(`${BASE_URL}${ENDPOINTS.api_projects}`);
+    const res = http.get(`${BASE_URL}${ENDPOINTS.api_projects}`, getProxyParams());
     check(res, {
       'api status 200': (r) => r.status === 200,
       'api balikin JSON': (r) => r.headers['Content-Type']?.includes('application/json'),

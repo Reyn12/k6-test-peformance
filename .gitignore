@@ -5,6 +5,7 @@ hasil*.json
 ringkasan*.json
 *.html
 *.csv
+.env
 
 # OS junk
 .DS_Store

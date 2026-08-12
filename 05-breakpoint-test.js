@@ -1,6 +1,7 @@
 import http from 'k6/http';
 import { check } from 'k6';
 import { BASE_URL, ENDPOINTS } from './config.js';
+import { getProxyParams } from './proxy.js';
 
 // Titik patah (req/detik) di stage terakhir, bisa diatur dari env
 const MAX_RATE = Number(__ENV.MAX_RATE || 4000);
@@ -24,7 +25,7 @@ export const options = {
 };
 
 export default function () {
-  const res = http.get(`${BASE_URL}${ENDPOINTS.landing}`);
+  const res = http.get(`${BASE_URL}${ENDPOINTS.landing}`, getProxyParams());
   check(res, {
     'status 200': (r) => r.status === 200,
   });
